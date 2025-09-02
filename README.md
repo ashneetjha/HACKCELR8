@@ -65,9 +65,9 @@ In the contact section, update:
 
 
 ## How to Run
-
-1. Simply open `index.html` in a web browser
-2. Or use a local server for better performance:
+1. Deployed Link: https://hackcelr8.vercel.app/
+2. Simply open `index.html` in a web browser
+3. Or use a local server for better performance:
    ```bash
    # Using Python
    python -m http.server 8000
