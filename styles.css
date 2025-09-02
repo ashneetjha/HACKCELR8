@@ -1,6 +1,8 @@
 /* ===== Reset & Base ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+:root { --nav-h: 70px; --cursor-scale: 1; }
+
 html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 
 body {
@@ -65,19 +67,54 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .hero > * { position: relative; z-index: 2; }
 
+/* Semi-transparent logo bar (4 logos) */
 .hero-logos {
-  position: absolute; top: 100px; left: 0; right: 0;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0 50px; z-index: 2;
+  position: absolute;
+  top: calc(var(--nav-h) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 880px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 4vw, 28px);
+  padding: clamp(6px, 1.3vw, 10px) clamp(10px, 2vw, 16px);
+  background: rgba(0,0,0,0.38);
+  border: 1px solid rgba(220,20,60,0.35);
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  z-index: 3;
 }
-.hero-logo-left, .hero-logo-right {
-  height: 80px; width: auto; object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+.hero-logos::after {
+  content: '';
+  width: 1px;
+  height: clamp(20px, 4vw, 36px);
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.25), transparent);
+  margin: 0 clamp(8px, 2.5vw, 16px);
 }
 
+/* Uniform sizing & spacing for all four logos */
+.hero-logos img {
+  height: clamp(28px, 4.5vw, 50px);
+  width: auto;
+  object-fit: contain;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+  max-width: 23%;
+}
+
+/* Explicit ordering so you can append the two new images in any order */
+.hero-logos img[src$="Logo IEEE SSIT.png"] { order: 1; } /* IEEE SSIT (left-most) */
+.hero-logos img[src$="IEEE_Student_Branch_Logo.png"] { order: 2; } /* to the right of SSIT */
+.hero-logos img[src$="ECE Log.png"] { order: 3; } /* to the left of SRM */
+.hero-logos img[src$="SRM-Institute-of-Science-and-Technology-Logo.png"] { order: 4; } /* right-most */
+
+/* Hero title + text — slightly smaller */
 .hero h1 {
   font-family: 'Orbitron', monospace;
-  font-size: 4rem; font-weight: 900; color: #dc143c;
+  font-size: clamp(2.2rem, 7vw, 3.6rem);
+  font-weight: 900; color: #dc143c;
   text-shadow: 0 0 20px rgba(220,20,60,0.8), 0 0 40px rgba(220,20,60,0.4), 0 0 60px rgba(220,20,60,0.2);
   margin-bottom: 1rem; animation: glow 2s ease-in-out infinite alternate; position: relative; z-index: 3;
 }
@@ -85,11 +122,23 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   from { text-shadow: 0 0 20px rgba(220,20,60,0.8), 0 0 40px rgba(220,20,60,0.4), 0 0 60px rgba(220,20,60,0.2); }
   to   { text-shadow: 0 0 30px rgba(220,20,60,1),  0 0 60px rgba(220,20,60,0.6), 0 0 90px rgba(220,20,60,0.3); }
 }
-.hero .subtitle { font-size: 1.5rem; color: #fff; margin-bottom: 1rem; font-weight: 600; }
-.hero .description {
-  font-size: 1.1rem; color: #ccc; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;
+.hero .subtitle { font-size: clamp(1rem, 3.2vw, 1.35rem); color: #fff; margin-bottom: 1rem; font-weight: 600; }
+.hero .description { font-size: clamp(.95rem, 2.6vw, 1.05rem); color: #ccc; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* Hero card — moved down further so it never collides with logo bar */
+.hero-content {
+  z-index: 2; position: relative; background: rgba(0,0,0,0.4);
+  padding: clamp(18px, 2.5vw, 28px); border-radius: 20px; backdrop-filter: blur(10px);
+  border: 2px solid rgba(220,20,60,0.4);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(220,20,60,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  animation: heroGlow 4s ease-in-out infinite alternate;
+  max-width: min(720px, 92vw);
+  margin: clamp(56px, 12vh, 140px) auto 0 auto; /* increased from previous */
 }
-.hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+@keyframes heroGlow {
+  0% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(220,20,60,0.3), inset 0 1px 0 rgba(255,255,255,0.1); }
+  100% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 50px rgba(220,20,60,0.6), inset 0 1px 0 rgba(255,255,255,0.1); }
+}
 
 /* Hero overlays */
 .hero::before {
@@ -239,28 +288,15 @@ section h2::after {
 
 /* Icon pill */
 .about-icon {
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
+  width: 46px; height: 46px; display: grid; place-items: center;
   border-radius: 12px;
   background: linear-gradient(45deg, #dc143c, #b22222);
   color: #fff;
   margin-bottom: .75rem;
   box-shadow: 0 6px 16px rgba(220,20,60,0.35);
 }
-
-.about-card h3, .about-card h4 {
-  margin: .25rem 0 .5rem;
-  font-family: 'Rajdhani', system-ui, sans-serif;
-  font-weight: 700;
-  color: #fff;
-}
-.about-card p {
-  margin: 0;
-  line-height: 1.6;
-  color: #f2f2f2;
-}
+.about-card h3, .about-card h4 { margin: .25rem 0 .5rem; font-family: 'Rajdhani', system-ui, sans-serif; font-weight: 700; color: #fff; }
+.about-card p { margin: 0; line-height: 1.6; color: #f2f2f2; }
 
 /* ===== Tracks ===== */
 .tracks {
@@ -279,9 +315,7 @@ section h2::after {
 }
 .themed-tracks .track-card.themed:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 16px 48px rgba(220,20,60,0.25); border-color: #b22222; }
 .themed-tracks .track-card.themed i { font-size: 2.5rem; color: #dc143c; margin-bottom: 1rem; text-shadow: 0 2px 8px rgba(220,20,60,0.15); }
-.themed-tracks .track-card.themed h3 {
-  font-size: 1.3rem; font-family: 'Orbitron', monospace; color: #fff; margin-bottom: 0.7rem; letter-spacing: 1px;
-}
+.themed-tracks .track-card.themed h3 { font-size: 1.3rem; font-family: 'Orbitron', monospace; color: #fff; margin-bottom: 0.7rem; letter-spacing: 1px; }
 .themed-tracks .track-card.themed p { color: #f2f2f2; font-size: 1rem; line-height: 1.6; margin-bottom: 0; }
 
 .tracks-row { display: flex; flex-direction: row; gap: 2rem; justify-content: center; }
@@ -349,12 +383,34 @@ section h2::after {
 }
 .register-contact h2 { background: none; color: #fff; min-height: auto; display: block; align-items: unset; filter: none; }
 
-.qr-image-container img { filter: none; transition: box-shadow 0.3s; }
-.qr-image-container img:hover { box-shadow: 0 4px 24px #dc143c; }
+/* === Fix: center QR image with caption below === */
+.qr-image-container{
+  display: flex;
+  flex-direction: column;     /* put caption below the image */
+  align-items: center;        /* center horizontally */
+  justify-content: center;    /* center vertically within its own box */
+  gap: 0.5rem;                /* space between image and caption */
+  margin: 2rem auto !important;
+  text-align: center !important;
+  max-width: 100%;
+}
 
+.qr-image-container img{
+  display: block;             /* remove inline baseline gap */
+  height: auto;
+  /* leave sizing to your inline styles; or uncomment to control from CSS:
+  max-width: 220px;
+  width: 100%;
+  */
+}
+
+.qr-image-container p{
+  margin: 0;                  
+}
 .register-contact h4 { color: #dc143c; font-size: 1.4rem; margin-bottom: 1rem; font-family: 'Orbitron', monospace; }
 .register-contact-content {
   display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto;
+  align-items: start; /* align both columns nicely */
 }
 .registration-section, .contact-section {
   background: rgba(255,255,255,0.05);
@@ -430,19 +486,6 @@ section h2::after {
 }
 #scrollToTopBtn:hover { background: linear-gradient(45deg, #b22222, #dc143c); box-shadow: 0 8px 32px rgba(220,20,60,0.35); }
 
-/* ===== Hero Content Card ===== */
-.hero-content {
-  z-index: 2; position: relative; background: rgba(0,0,0,0.4);
-  padding: 3rem; border-radius: 20px; backdrop-filter: blur(10px);
-  border: 2px solid rgba(220,20,60,0.4);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(220,20,60,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
-  animation: heroGlow 4s ease-in-out infinite alternate; max-width: 800px; margin: 0 auto;
-}
-@keyframes heroGlow {
-  0% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(220,20,60,0.3), inset 0 1px 0 rgba(255,255,255,0.1); }
-  100% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 50px rgba(220,20,60,0.6), inset 0 1px 0 rgba(255,255,255,0.1); }
-}
-
 /* ===== Desktop About Grid Breakpoints ===== */
 @media (min-width: 768px) {
   .about-card { grid-column: span 6; }
@@ -477,10 +520,7 @@ section h2::after {
   .nav-menu a { display: block; padding: 0.9rem 1rem; }
   .nav-menu.active { left: 0; }
 
-  .hero h1 { font-size: 2.5rem; }
-  .hero .subtitle { font-size: 1.2rem; }
   .hero-buttons { flex-direction: column; align-items: center; }
-  .hero-content { padding: 2rem 1.25rem; }
 
   /* Top-align content instead of vertical centering to avoid cramped view */
   .about, .tracks, .sponsors, .judges, .register-contact { min-height: auto; display: block; }
@@ -499,8 +539,14 @@ section h2::after {
   .event-details { padding: 1rem; }
   .detail-item { flex-direction: column; text-align: center; gap: 0.5rem; }
 
-  .hero-logos { padding: 0 20px; top: 80px; }
-  .hero-logo-left, .hero-logo-right { height: 60px; }
+  /* Logo bar sizing for mobile */
+  .hero-logos {
+    top: calc(var(--nav-h) + 6px);
+    gap: 12px;
+    padding: 6px 12px;
+    width: min(96%, 520px);
+  }
+  .hero-logos img { height: 32px; max-width: 45%; }
 
   .tracks-grid, .sponsors-grid, .judges-grid { grid-template-columns: 1fr; }
 
@@ -517,12 +563,9 @@ section h2::after {
     bottom: 16px !important; right: 16px !important;
     width: 44px !important; height: 44px !important; font-size: 1.5rem !important;
   }
-}
 
-@media (max-width: 600px) {
-  .tracks-grid { grid-template-columns: 1fr; }
-  .themed-tracks .track-card.themed { padding: 1.5rem 1rem; font-size: 0.95rem; }
-  .hero-logos { display: none; } /* free vertical space on small phones */
+  /* Push hero card a bit more on very cramped heights */
+  .hero-content { margin-top: clamp(68px, 14vh, 150px); }
 }
 
 @media (max-width: 480px) {
@@ -535,83 +578,17 @@ section h2::after {
 /* Optional badges row (works on all sizes) */
 .about-badges {
   margin-top: 1.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: .75rem;
-  justify-content: center;
+  display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center;
 }
 .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  font-weight: 600;
-  padding: .5rem .75rem;
-  border-radius: 999px;
-  background: rgba(220,20,60,0.10);
-  border: 1px solid rgba(220,20,60,0.25);
-  color: #ffd9df; /* light crimson tint on dark bg */
+  display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+  padding: .5rem .75rem; border-radius: 999px;
+  background: rgba(220,20,60,0.10); border: 1px solid rgba(220,20,60,0.25);
+  color: #ffd9df;
 }
 .badge i { font-size: .9rem; color: #dc143c; }
-/* ===== Custom Red Cursor ===== */
-@media (any-pointer: fine) {
-  /* hide default cursor everywhere on desktop/laptop */
-  html, body, a, button, .btn, input, textarea, select, [role="button"] {
-    cursor: none !important;
-  }
 
-  /* the dot */
-  .custom-cursor {
-    position: fixed;
-    top: 0; left: 0;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #dc143c;
-    box-shadow: 0 0 8px rgba(220,20,60,0.9), 0 0 18px rgba(220,20,60,0.45);
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    z-index: 10000;
-    opacity: 0;             /* fade in when mouse enters */
-    transition: opacity .15s ease;
-  }
-
-  /* the outer ring (slight trail/scale) */
-  .custom-cursor-outline {
-    position: fixed;
-    top: 0; left: 0;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    border: 2px solid rgba(220,20,60,0.9);
-    box-shadow: 0 0 16px rgba(220,20,60,0.35);
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    opacity: 0;
-    transition: transform .15s ease, opacity .15s ease, border-color .15s ease;
-    backdrop-filter: blur(1px);
-  }
-
-  /* state when hovering clickable things (links, buttons, .btn, etc.) */
-  .cursor-clickable .custom-cursor-outline {
-    transform: translate(-50%, -50%) scale(1.25);
-  }
-
-  /* state while mouse is down */
-  .cursor-down .custom-cursor-outline {
-    transform: translate(-50%, -50%) scale(0.95);
-    border-color: #ff5a76;
-  }
-}
-
-/* On touch devices, keep normal behavior */
-@media (any-pointer: coarse) {
-  .custom-cursor,
-  .custom-cursor-outline {
-    display: none !important;
-  }
-}
 /* ===== Custom F1-style Triangular Cursor ===== */
-:root { --cursor-scale: 1; }
-
 @media (any-pointer: fine) {
   /* Hide native cursor on desktop/laptop */
   html, body, a, button, .btn, input, textarea, select, [role="button"] {
@@ -620,46 +597,35 @@ section h2::after {
 
   /* Main triangle pointer (tip at left-middle) */
   .cursor-tri {
-    position: fixed;
-    left: 0; top: 0;
+    position: fixed; left: 0; top: 0;
     width: 22px; height: 16px;
-    /* Aggressive wedge: tip at 0% 50% pointing right */
     clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
     background: linear-gradient(45deg, #ff304f, #dc143c);
     filter: drop-shadow(0 0 8px rgba(220,20,60,0.85));
-    pointer-events: none;
-    z-index: 10000;
-    opacity: 0;
-    /* We drive translate via CSS variables so clickable/press can scale without
-       clobbering translate */
-    --tx: 0px;
-    --ty: 0px;
-    --s: var(--cursor-scale);
+    pointer-events: none; z-index: 10000; opacity: 0;
+    --tx: 0px; --ty: 0px; --s: var(--cursor-scale);
     transform: translate(var(--tx), var(--ty)) scale(var(--s));
     transition: opacity .12s ease;
   }
 
-  /* Trailing wedge (light outline, slight blur) */
+  /* Trailing wedge */
   .cursor-trail {
-    position: fixed;
-    left: 0; top: 0;
+    position: fixed; left: 0; top: 0;
     width: 34px; height: 24px;
     clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
     border: 2px solid rgba(220,20,60,0.9);
     background: rgba(220,20,60,0.07);
     filter: blur(.3px) drop-shadow(0 0 10px rgba(220,20,60,0.25));
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0; /* toggled to ~0.35 when active */
+    pointer-events: none; z-index: 9999; opacity: 0;
     transition: opacity .12s ease, transform .15s ease;
   }
 
-  /* States — “DRS” look when over clickable, compress on mousedown */
+  /* States */
   html.cursor-clickable { --cursor-scale: 1.08; }
   html.cursor-down      { --cursor-scale: .95; }
 }
 
-/* On touch devices keep native cursor/behavior */
+/* On touch devices keep native behavior */
 @media (any-pointer: coarse) {
   .cursor-tri, .cursor-trail { display: none !important; }
 }
