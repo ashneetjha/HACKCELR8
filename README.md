@@ -63,21 +63,6 @@ In the contact section, update:
 - Social media handles
 - Venue details
 
-### 3. Customize Colors
-
-The main colors used are:
-- Primary Orange: `#ff6b35`
-- Secondary Orange: `#f7931e`
-- Dark Background: `#0a0a0a`
-- Light Background: `#f8f9fa`
-
-To change colors, update the CSS variables in `styles.css`.
-
-### 4. Add Your Hackathon Poster
-
-1. Save your poster image in the project folder
-2. Update the about section to include the poster image
-3. Replace the placeholder with your actual poster
 
 ## How to Run
 
