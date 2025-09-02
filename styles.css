@@ -62,41 +62,43 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   background-position: center;
   background-attachment: fixed; /* disabled on small screens below */
   display: flex; align-items: center; justify-content: center;
-  text-align: center; position: relative; overflow: hidden;
+  text-align: center; position: relative; overflow: visible; /* avoid clipping the logo bar */
   transition: background-size 0.3s ease;
 }
 .hero > * { position: relative; z-index: 2; }
-/* Semi-transparent logo bar (4 logos) */
+
+/* ===== Semi-transparent logo bar (4 logos) — full width, extremes pinned, even spacing ===== */
 .hero-logos {
   position: absolute;
-  top: calc(var(--nav-h) + 6px);            /* slightly higher than before to avoid overlap */
+  top: calc(var(--nav-h) + 12px);
   left: 50%;
   transform: translateX(-50%);
-  width: min(90%, 840px);                   /* a bit narrower so the box is smaller */
+  width: 100vw;
+  max-width: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
-  gap: clamp(10px, 3.5vw, 24px);            /* smaller gap */
-  padding: clamp(4px, 1vw, 8px)             /* slimmer vertical padding */
-           clamp(8px, 1.6vw, 14px);         /* slimmer horizontal padding */
+  justify-content: space-between;     /* first at far left, last at far right */
+  gap: 0;                             /* avoid double-spacing with space-between */
+  padding: clamp(6px, 1.2vw, 12px) 6px; /* tiny side padding to avoid border clipping */
   background: rgba(0,0,0,0.38);
   border: 1px solid rgba(220,20,60,0.35);
-  border-radius: 12px;                      /* slightly smaller radius */
+  border-radius: 0;
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
   z-index: 3;
 }
-
 .hero-logos::after {
   content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
   width: 1px;
   height: clamp(20px, 4vw, 36px);
   background: linear-gradient(180deg, transparent, rgba(255,255,255,0.25), transparent);
-  margin: 0 clamp(8px, 2.5vw, 16px);
+  pointer-events: none;
 }
 
-/* Uniform sizing & spacing for all four logos (base) */
+/* Logo sizing */
 .hero-logos img {
   height: clamp(28px, 4.5vw, 50px);
   width: auto;
@@ -105,21 +107,20 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
   max-width: 22%;
 }
-
-/* Slightly larger middle two logos */
+/* Slight bump for middle two */
 .hero-logos img[src$="IEEE_Student_Branch_Logo.png"],
 .hero-logos img[src$="ECE Logo.png"] {
-  height: clamp(32px, 5.2vw, 58px);   /* gentle bump */
+  height: clamp(32px, 5.2vw, 58px);
   max-width: 26%;
 }
 
-/* Explicit ordering (left → right) */
-.hero-logos img[src$="Logo IEEE SSIT.png"] { order: 1; } /* IEEE SSIT (left-most) */
-.hero-logos img[src$="IEEE_Student_Branch_Logo.png"] { order: 2; } /* next */
-.hero-logos img[src$="ECE Logo.png"] { order: 3; } /* next */
-.hero-logos img[src$="SRM-Institute-of-Science-and-Technology-Logo.png"] { order: 4; } /* SRM (right-most) */
+/* Order: SSIT (left) → Student Branch → ECE → SRM (right) */
+.hero-logos img[src$="Logo IEEE SSIT.png"] { order: 1; }
+.hero-logos img[src$="IEEE_Student_Branch_Logo.png"] { order: 2; }
+.hero-logos img[src$="ECE Logo.png"] { order: 3; }
+.hero-logos img[src$="SRM-Institute-of-Science-and-Technology-Logo.png"] { order: 4; }
 
-/* Hero title + text — slightly smaller */
+/* Hero title + text */
 .hero h1 {
   font-family: 'Orbitron', monospace;
   font-size: clamp(2.2rem, 7vw, 3.6rem);
@@ -134,7 +135,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .hero .subtitle { font-size: clamp(1rem, 3.2vw, 1.35rem); color: #fff; margin-bottom: 1rem; font-weight: 600; }
 .hero .description { font-size: clamp(.95rem, 2.6vw, 1.05rem); color: #ccc; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
 
-/* Hero card — moved down further so it never collides with logo bar */
+/* Hero card — down a bit more so it never collides with the logo bar */
 .hero-content {
   z-index: 2; position: relative; background: rgba(0,0,0,0.4);
   padding: clamp(18px, 2.5vw, 28px); border-radius: 20px; backdrop-filter: blur(10px);
@@ -142,7 +143,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(220,20,60,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
   animation: heroGlow 4s ease-in-out infinite alternate;
   max-width: min(720px, 92vw);
-  margin: clamp(56px, 12vh, 140px) auto 0 auto; /* increased from previous */
+  margin: clamp(96px, 18vh, 180px) auto 0; /* increased for safe clearance */
 }
 @keyframes heroGlow {
   0% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(220,20,60,0.3), inset 0 1px 0 rgba(255,255,255,0.1); }
@@ -351,9 +352,9 @@ section h2::after {
 .sponsor-placeholder {
   background:
     linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%),
-    url('./images/LoadingBG.png');
+    url('./images/printellect logo.png');
   background-size: cover; background-position: center;
-  padding: 2rem; border-radius: 10px; text-align: center; backdrop-filter: blur(10px);
+  padding: 2rem; border-radius: 10px; text-align: center; backdrop-filter: blur(0px);
   border: 1px solid rgba(220,20,60,0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: transform 0.3s ease;
 }
 .sponsor-placeholder:hover { transform: translateY(-5px); }
@@ -403,19 +404,9 @@ section h2::after {
   text-align: center !important;
   max-width: 100%;
 }
+.qr-image-container img{ display: block; height: auto; }
+.qr-image-container p{ margin: 0; }
 
-.qr-image-container img{
-  display: block;             /* remove inline baseline gap */
-  height: auto;
-  /* leave sizing to your inline styles; or uncomment to control from CSS:
-  max-width: 220px;
-  width: 100%;
-  */
-}
-
-.qr-image-container p{
-  margin: 0;                  
-}
 .register-contact h4 { color: #dc143c; font-size: 1.4rem; margin-bottom: 1rem; font-family: 'Orbitron', monospace; }
 .register-contact-content {
   display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto;
@@ -517,7 +508,7 @@ section h2::after {
   .tracks-row { flex-direction: column; gap: 2rem; align-items: center; }
 }
 
-/* Mobile-first fixes */
+/* ===== Mobile-first fixes ===== */
 @media (max-width: 768px) {
   .hamburger { display: flex; }
   .nav-menu {
@@ -548,14 +539,13 @@ section h2::after {
   .event-details { padding: 1rem; }
   .detail-item { flex-direction: column; text-align: center; gap: 0.5rem; }
 
-  /* Logo bar sizing for mobile */
+  /* Full-width logo bar on mobile too */
   .hero-logos {
-    top: calc(var(--nav-h) + 6px);
-    gap: 12px;
-    padding: 6px 12px;
-    width: min(96%, 520px);
+    top: calc(var(--nav-h) + 10px);
+    width: 100vw;
+    padding: 6px 10px;
+    gap: clamp(8px, 4vw, 18px);
   }
-  .hero-logos img { height: 32px; max-width: 45%; }
 
   .tracks-grid, .sponsors-grid, .judges-grid { grid-template-columns: 1fr; }
 
@@ -573,8 +563,8 @@ section h2::after {
     width: 44px !important; height: 44px !important; font-size: 1.5rem !important;
   }
 
-  /* Push hero card a bit more on very cramped heights */
-  .hero-content { margin-top: clamp(68px, 14vh, 150px); }
+  /* Push hero card more on very cramped heights */
+  .hero-content { margin-top: clamp(100px, 22vh, 190px); }
 }
 
 @media (max-width: 480px) {
@@ -596,42 +586,3 @@ section h2::after {
   color: #ffd9df;
 }
 .badge i { font-size: .9rem; color: #dc143c; }
-/* === Logo bar: full-width under navbar, unclipped, even spacing === */
-.hero { overflow: visible; } /* let the rounded border show fully */
-
-.hero-logos {
-  top: calc(var(--nav-h) + 10px);   /* sit right below the black navbar */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;                     /* span across the whole top */
-  max-width: none;
-  justify-content: space-evenly;    /* perfectly uniform spacing */
-  gap: clamp(12px, 3vw, 40px);
-  padding: clamp(6px, 1.1vw, 10px) clamp(12px, 2vw, 18px);
-  border-radius: 16px;
-}
-
-/* Keep the center divider but don't let it affect layout spacing */
-.hero-logos::after {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-/* Ensure the order (left → right) exactly as requested */
-.hero-logos img[src$="Logo IEEE SSIT.png"] { order: 1; } /* leftmost */
-.hero-logos img[src$="IEEE_Student_Branch_Logo.png"] { order: 2; }
-.hero-logos img[src$="ECE Log.png"] { order: 3; }
-.hero-logos img[src$="SRM-Institute-of-Science-and-Technology-Logo.png"] { order: 4; } /* rightmost */
-
-/* Mobile tweaks (keep full width & spacing comfy) */
-@media (max-width: 768px) {
-  .hero-logos {
-    top: calc(var(--nav-h) + 8px);
-    width: 100vw;
-    padding: 6px 10px;
-    gap: clamp(8px, 4vw, 18px);
-  }
-}
