@@ -4,7 +4,7 @@ A modern, responsive website for the HACKCELR8 hackathon with an F1 racing theme
 
 ## Features
 
-- 🏎️ **F1 Racing Theme** - Orange and black color scheme with racing-inspired design
+- 🏎️ **F1 Racing Theme** - Red and black color scheme with racing-inspired design
 - 📱 **Fully Responsive** - Works perfectly on desktop, tablet, and mobile devices
 - ⚡ **Modern Animations** - Smooth scroll animations and interactive elements
 - 📝 **Registration Form** - Ready-to-use registration system
