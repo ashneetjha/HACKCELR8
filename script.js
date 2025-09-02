@@ -1,6 +1,7 @@
 // =======================
 // HACKCELR8 - script.js
 // Fixes first-click nav scroll; stable parallax; UI polish
+// + Custom F1 Triangular Cursor (desktop only)
 // =======================
 
 // ---- DOM refs ----
@@ -30,6 +31,114 @@ function setSectionScrollMargins() {
   const navH = getNavH();
   document.querySelectorAll('section[id]').forEach(sec => {
     sec.style.scrollMarginTop = `${navH + 8}px`;
+  });
+}
+
+/**
+ * Initialize custom F1 triangular cursor (desktop/laptop only).
+ * Requires CSS classes: .cursor-tri and .cursor-trail
+ */
+function initCustomCursor() {
+  // Disable on touch devices or when no fine pointer
+  if (window.matchMedia('(any-pointer: coarse)').matches) return;
+
+  // Create cursor elements
+  const tri   = document.createElement('div');
+  const trail = document.createElement('div');
+  tri.className   = 'cursor-tri';
+  trail.className = 'cursor-trail';
+  document.body.appendChild(trail);
+  document.body.appendChild(tri);
+
+  // Measure sizes so the tip aligns with the pointer
+  let triW = 22, triH = 16, trailW = 34, trailH = 24;
+  const measure = () => {
+    const r1 = tri.getBoundingClientRect();
+    const r2 = trail.getBoundingClientRect();
+    if (r1.width)  triW  = r1.width;
+    if (r1.height) triH  = r1.height;
+    if (r2.width)  trailW = r2.width;
+    if (r2.height) trailH = r2.height;
+  };
+  measure();
+  window.addEventListener('resize', measure);
+
+  // Position state
+  let x = window.innerWidth / 2,  y = window.innerHeight / 2; // mouse target
+  let xr = x, yr = y; // trail (lerped) coords
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  // Show/hide on enter/leave/focus
+  const show = () => {
+    tri.style.opacity = '1';
+    trail.style.opacity = '0.35';
+  };
+  const hide = () => {
+    tri.style.opacity = '0';
+    trail.style.opacity = '0';
+  };
+  document.addEventListener('mouseenter', show);
+  document.addEventListener('mouseleave', hide);
+  window.addEventListener('blur',  hide);
+  window.addEventListener('focus', show);
+
+  // Update function to place elements.
+  // Triangle tip is at left-middle => left = x, top = y - triH/2
+  function placeTriangle(cx, cy) {
+    tri.style.setProperty('--tx', `${cx}px`);
+    tri.style.setProperty('--ty', `${cy - triH / 2}px`);
+  }
+  // Trail sits slightly behind the tip (shift left a bit)
+  function placeTrail(cx, cy) {
+    const back = 6; // how far behind the tip
+    trail.style.transform = `translate(${cx - back}px, ${cy - trailH / 2}px)`;
+  }
+
+  // First position
+  placeTriangle(x, y);
+  placeTrail(xr, yr);
+
+  // Move handler
+  window.addEventListener('mousemove', (e) => {
+    x = e.clientX; y = e.clientY;
+
+    // place triangle immediately
+    placeTriangle(x, y);
+
+    // clickable state (links, buttons, role=button, .btn, input buttons)
+    const el = document.elementFromPoint(x, y);
+    const clickable = !!(
+      el &&
+      el.closest('a,button,[role="button"],.btn,input[type="submit"],input[type="button"]')
+    );
+    document.documentElement.classList.toggle('cursor-clickable', clickable);
+  }, { passive: true });
+
+  // Mouse press visual feedback
+  window.addEventListener('mousedown', () => {
+    document.documentElement.classList.add('cursor-down');
+  });
+  window.addEventListener('mouseup', () => {
+    document.documentElement.classList.remove('cursor-down');
+  });
+
+  // Smooth trailing loop
+  let raf;
+  function tick() {
+    xr = lerp(xr, x, 0.18);
+    yr = lerp(yr, y, 0.18);
+    placeTrail(xr, yr);
+    raf = requestAnimationFrame(tick);
+  }
+  tick();
+
+  // Pause RAF when tab hidden
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (raf) cancelAnimationFrame(raf);
+    } else {
+      tick();
+    }
   });
 }
 
@@ -121,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set section scroll margins based on current navbar height
   setSectionScrollMargins();
 
-  // Watch for resize (e.g., mobile menu wraps; fonts load) to keep margins true
+  // Keep margins true on resize/font-load
   window.addEventListener('resize', () => setSectionScrollMargins());
 
   // Observe elements for animation
@@ -146,23 +255,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Parallax (background only, no layout shift)
-  const parallaxSections = document.querySelectorAll(
-    '.hero, .about, .tracks, .sponsors, .judges, .register-contact'
-  );
+  // Parallax (background only, no layout shift) — disabled for touch or reduced-motion
+  const enableParallax =
+    !window.matchMedia('(any-pointer: coarse)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    parallaxSections.forEach(section => {
-      // Clear any previous inline transforms and move only the background
-      section.style.transform = '';
-      section.style.backgroundPositionY = `${-scrolled * 0.2}px`;
+  if (enableParallax) {
+    const parallaxSections = document.querySelectorAll(
+      '.hero, .about, .tracks, .sponsors, .judges, .register-contact'
+    );
 
-      // Gentle, capped zoom to avoid pixelation
-      const zoom = 1 + Math.min(scrolled * 0.0005, 0.15);
-      section.style.backgroundSize = `${zoom * 100}%`;
-    });
-  }, { passive: true });
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      parallaxSections.forEach(section => {
+        section.style.transform = '';
+        section.style.backgroundPositionY = `${-scrolled * 0.2}px`;
+
+        const zoom = 1 + Math.min(scrolled * 0.0005, 0.15);
+        section.style.backgroundSize = `${zoom * 100}%`;
+      });
+    }, { passive: true });
+  }
+
+  // Init the F1 triangular cursor after DOM is ready
+  initCustomCursor();
 });
 
 // ---- Fade-in after full load ----
@@ -173,7 +289,6 @@ window.addEventListener('load', () => {
   if (location.hash) {
     const target = document.querySelector(location.hash);
     if (target) {
-      // Wait a frame for fonts/layout, then jump with offset
       requestAnimationFrame(() => scrollToTarget(target, 'auto'));
     }
   }

@@ -10,7 +10,11 @@ body {
   background: #181818;
   scrollbar-color: #dc143c #222; /* Firefox */
   scrollbar-width: thin;         /* Firefox */
+  overflow-x: hidden;            /* prevent sideways scroll on mobile */
 }
+
+/* Make media responsive */
+img, svg, video { max-width: 100%; height: auto; display: block; }
 
 /* WebKit Scrollbar */
 ::-webkit-scrollbar { width: 12px; }
@@ -25,9 +29,11 @@ body {
 
 /* ===== Navigation ===== */
 .navbar {
-  position: fixed; top: 0; width: 100%;
+  position: fixed; top: 0; left: 0; right: 0;
   background: rgba(0, 0, 0, 0.9);
   z-index: 1000; padding: 1rem 0;
+  -webkit-backdrop-filter: saturate(140%) blur(6px);
+  backdrop-filter: saturate(140%) blur(6px);
 }
 .nav-container {
   max-width: 1200px; margin: 0 auto; padding: 0 20px;
@@ -35,7 +41,11 @@ body {
 }
 .nav-logo-img { height: 50px; width: auto; object-fit: contain; }
 .nav-menu { display: flex; list-style: none; gap: 2rem; }
-.nav-menu a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
+.nav-menu a {
+  color: #fff; text-decoration: none; font-weight: 500;
+  transition: color 0.3s ease;
+  padding: .25rem .1rem;
+}
 .nav-menu a:hover { color: #dc143c; }
 .hamburger { display: none; flex-direction: column; cursor: pointer; }
 .hamburger span { width: 25px; height: 3px; background: #fff; margin: 3px 0; transition: 0.3s; }
@@ -48,7 +58,7 @@ body {
     url('./images/BGHome.webp');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: fixed; /* disabled on small screens below */
   display: flex; align-items: center; justify-content: center;
   text-align: center; position: relative; overflow: hidden;
   transition: background-size 0.3s ease;
@@ -120,9 +130,15 @@ body {
 /* ===== Sections (shared) ===== */
 section {
   padding: 80px 0; position: relative;
-  backdrop-filter: blur(0); transition: backdrop-filter 0.5s ease, transform 0.5s ease;
+  backdrop-filter: blur(0);
+  transition: backdrop-filter 0.5s ease, transform 0.5s ease;
 }
-section:hover { backdrop-filter: blur(2px); }
+
+/* Apply hover blur only on devices that actually have hover */
+@media (hover: hover) {
+  section:hover { backdrop-filter: blur(2px); }
+}
+
 section h2 {
   font-family: 'Orbitron', monospace; font-size: 2.5rem; text-align: center;
   margin-bottom: 3rem; color: #fff; position: relative;
@@ -137,7 +153,7 @@ section h2::after {
 .about, .tracks, .sponsors, .judges, .register-contact {
   border-top: 1px solid rgba(220,20,60,0.1);
   border-bottom: 1px solid rgba(220,20,60,0.1);
-  transition: none !important; animation: fadeInUp 0.8s ease-out;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 /* Ensure proper spacing between hero and about */
@@ -149,9 +165,12 @@ section h2::after {
     linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%),
     url('./images/aboutbg.png');
   background-size: cover; background-position: center; background-attachment: fixed;
-  position: relative; z-index: 1; margin-top: 0; color: #fff; min-height: 100vh; display: flex; align-items: center;
+  position: relative; z-index: 1; color: #fff;
+  min-height: 100vh; display: flex; align-items: center;
 }
 .about h2 { color: #fff; }
+
+/* Section containers aligned center on desktop, top on mobile */
 .about .container,
 .tracks .container,
 .sponsors .container,
@@ -160,6 +179,7 @@ section h2::after {
   width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px;
   display: flex; flex-direction: column; justify-content: center; min-height: 80vh;
 }
+
 .about-content { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center; justify-content: center; text-align: center; }
 .about-text h3 { font-size: 1.8rem; color: #fff; margin-bottom: 1rem; }
 .about-text p { font-size: 1.1rem; color: #f2f2f2; margin-bottom: 1.5rem; line-height: 1.8; }
@@ -185,6 +205,62 @@ section h2::after {
 .feature:hover { transform: translateY(-5px); }
 .feature i { font-size: 2.5rem; color: #dc143c; margin-bottom: 1rem; }
 .feature h4 { font-size: 1.2rem; color: #fff; margin-bottom: 0.5rem; }
+
+/* === About section: boxed grid (space-filling cards) === */
+.about-subtitle {
+  text-align: center;
+  margin: .25rem 0 2rem;
+  font-family: 'Orbitron', system-ui, sans-serif;
+  letter-spacing: .06em;
+  color: #dc143c;
+}
+
+/* Responsive full-width grid that uses space nicely */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+/* Card base — dark glass to match theme */
+.about-card {
+  grid-column: span 12;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(220,20,60,0.25);
+  border-radius: 16px;
+  padding: clamp(14px, 2.5vw, 20px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.05) inset;
+  backdrop-filter: blur(8px);
+}
+
+/* Optional intro/venue modifiers */
+.about-card--intro { }
+.about-card--venue .location-btn { margin-top: .75rem; }
+
+/* Icon pill */
+.about-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #dc143c, #b22222);
+  color: #fff;
+  margin-bottom: .75rem;
+  box-shadow: 0 6px 16px rgba(220,20,60,0.35);
+}
+
+.about-card h3, .about-card h4 {
+  margin: .25rem 0 .5rem;
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  font-weight: 700;
+  color: #fff;
+}
+.about-card p {
+  margin: 0;
+  line-height: 1.6;
+  color: #f2f2f2;
+}
 
 /* ===== Tracks ===== */
 .tracks {
@@ -367,26 +443,57 @@ section h2::after {
   100% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 50px rgba(220,20,60,0.6), inset 0 1px 0 rgba(255,255,255,0.1); }
 }
 
-/* ===== Responsive ===== */
+/* ===== Desktop About Grid Breakpoints ===== */
+@media (min-width: 768px) {
+  .about-card { grid-column: span 6; }
+  .about-card--intro { grid-column: span 12; }
+}
+@media (min-width: 992px) {
+  .about-card { grid-column: span 4; }
+  .about-card--intro { grid-column: span 6; }
+  .about-card--venue { grid-column: span 6; }
+}
+
+/* ===== General Responsive Adjustments ===== */
+@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
+  /* Disable parallax/attachments for better mobile performance */
+  .hero, .about, .tracks, .sponsors, .judges, .register-contact { background-attachment: scroll; }
+}
+
 @media (max-width: 900px) {
   .tracks-grid { grid-template-columns: 1fr 1fr; }
   .tracks-row { flex-direction: column; gap: 2rem; align-items: center; }
 }
+
+/* Mobile-first fixes */
 @media (max-width: 768px) {
   .hamburger { display: flex; }
   .nav-menu {
     position: fixed; left: -100%; top: 70px; flex-direction: column;
-    background: rgba(0,0,0,0.9); width: 100%; text-align: center;
-    transition: 0.3s; padding: 2rem 0;
+    background: rgba(0,0,0,0.95); width: 100%; text-align: center;
+    transition: 0.3s; padding: 1rem 0; gap: 0;
+    height: calc(100vh - 70px); overflow-y: auto;
   }
+  .nav-menu a { display: block; padding: 0.9rem 1rem; }
   .nav-menu.active { left: 0; }
 
   .hero h1 { font-size: 2.5rem; }
   .hero .subtitle { font-size: 1.2rem; }
   .hero-buttons { flex-direction: column; align-items: center; }
+  .hero-content { padding: 2rem 1.25rem; }
 
-  .register-contact-content { grid-template-columns: 1fr; gap: 2rem; }
-  .contact-content { grid-template-columns: 1fr; }
+  /* Top-align content instead of vertical centering to avoid cramped view */
+  .about, .tracks, .sponsors, .judges, .register-contact { min-height: auto; display: block; }
+  .about .container,
+  .tracks .container,
+  .sponsors .container,
+  .judges .container,
+  .register-contact .container {
+    min-height: auto; justify-content: flex-start;
+    padding-top: 80px; padding-bottom: 60px;
+  }
+
+  .about-content { gap: 1.75rem; }
   .features { grid-template-columns: 1fr; }
 
   .event-details { padding: 1rem; }
@@ -397,22 +504,162 @@ section h2::after {
 
   .tracks-grid, .sponsors-grid, .judges-grid { grid-template-columns: 1fr; }
 
-  .google-form-container { padding: 2rem 1.5rem; }
+  .register-contact-content { grid-template-columns: 1fr; gap: 2rem; }
+  .google-form-container { padding: 1.5rem 1.25rem; }
   .google-form-container h3 { font-size: 1.5rem; }
   .google-form-container p { font-size: 1rem; }
-  .google-form-btn { font-size: 1.1rem; padding: 0.8rem 1.5rem; }
+  .google-form-btn { font-size: 1.05rem; padding: 0.8rem 1.4rem; }
 
   .social-icons { gap: 1rem; }
   .social-link { width: 45px; height: 45px; font-size: 1.3rem; }
 
-  #scrollToTopBtn { bottom: 16px !important; right: 16px !important; width: 44px !important; height: 44px !important; font-size: 1.5rem !important; }
+  #scrollToTopBtn {
+    bottom: 16px !important; right: 16px !important;
+    width: 44px !important; height: 44px !important; font-size: 1.5rem !important;
+  }
 }
+
 @media (max-width: 600px) {
   .tracks-grid { grid-template-columns: 1fr; }
   .themed-tracks .track-card.themed { padding: 1.5rem 1rem; font-size: 0.95rem; }
+  .hero-logos { display: none; } /* free vertical space on small phones */
 }
+
 @media (max-width: 480px) {
-  .hero h1 { font-size: 2rem; }
   section { padding: 60px 0; }
   section h2 { font-size: 2rem; }
+  .hero h1 { font-size: 2rem; }
+  .about-card { padding: 14px; }
+}
+
+/* Optional badges row (works on all sizes) */
+.about-badges {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: center;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-weight: 600;
+  padding: .5rem .75rem;
+  border-radius: 999px;
+  background: rgba(220,20,60,0.10);
+  border: 1px solid rgba(220,20,60,0.25);
+  color: #ffd9df; /* light crimson tint on dark bg */
+}
+.badge i { font-size: .9rem; color: #dc143c; }
+/* ===== Custom Red Cursor ===== */
+@media (any-pointer: fine) {
+  /* hide default cursor everywhere on desktop/laptop */
+  html, body, a, button, .btn, input, textarea, select, [role="button"] {
+    cursor: none !important;
+  }
+
+  /* the dot */
+  .custom-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #dc143c;
+    box-shadow: 0 0 8px rgba(220,20,60,0.9), 0 0 18px rgba(220,20,60,0.45);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    opacity: 0;             /* fade in when mouse enters */
+    transition: opacity .15s ease;
+  }
+
+  /* the outer ring (slight trail/scale) */
+  .custom-cursor-outline {
+    position: fixed;
+    top: 0; left: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(220,20,60,0.9);
+    box-shadow: 0 0 16px rgba(220,20,60,0.35);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    opacity: 0;
+    transition: transform .15s ease, opacity .15s ease, border-color .15s ease;
+    backdrop-filter: blur(1px);
+  }
+
+  /* state when hovering clickable things (links, buttons, .btn, etc.) */
+  .cursor-clickable .custom-cursor-outline {
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+
+  /* state while mouse is down */
+  .cursor-down .custom-cursor-outline {
+    transform: translate(-50%, -50%) scale(0.95);
+    border-color: #ff5a76;
+  }
+}
+
+/* On touch devices, keep normal behavior */
+@media (any-pointer: coarse) {
+  .custom-cursor,
+  .custom-cursor-outline {
+    display: none !important;
+  }
+}
+/* ===== Custom F1-style Triangular Cursor ===== */
+:root { --cursor-scale: 1; }
+
+@media (any-pointer: fine) {
+  /* Hide native cursor on desktop/laptop */
+  html, body, a, button, .btn, input, textarea, select, [role="button"] {
+    cursor: none !important;
+  }
+
+  /* Main triangle pointer (tip at left-middle) */
+  .cursor-tri {
+    position: fixed;
+    left: 0; top: 0;
+    width: 22px; height: 16px;
+    /* Aggressive wedge: tip at 0% 50% pointing right */
+    clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
+    background: linear-gradient(45deg, #ff304f, #dc143c);
+    filter: drop-shadow(0 0 8px rgba(220,20,60,0.85));
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0;
+    /* We drive translate via CSS variables so clickable/press can scale without
+       clobbering translate */
+    --tx: 0px;
+    --ty: 0px;
+    --s: var(--cursor-scale);
+    transform: translate(var(--tx), var(--ty)) scale(var(--s));
+    transition: opacity .12s ease;
+  }
+
+  /* Trailing wedge (light outline, slight blur) */
+  .cursor-trail {
+    position: fixed;
+    left: 0; top: 0;
+    width: 34px; height: 24px;
+    clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
+    border: 2px solid rgba(220,20,60,0.9);
+    background: rgba(220,20,60,0.07);
+    filter: blur(.3px) drop-shadow(0 0 10px rgba(220,20,60,0.25));
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0; /* toggled to ~0.35 when active */
+    transition: opacity .12s ease, transform .15s ease;
+  }
+
+  /* States — “DRS” look when over clickable, compress on mousedown */
+  html.cursor-clickable { --cursor-scale: 1.08; }
+  html.cursor-down      { --cursor-scale: .95; }
+}
+
+/* On touch devices keep native cursor/behavior */
+@media (any-pointer: coarse) {
+  .cursor-tri, .cursor-trail { display: none !important; }
 }
