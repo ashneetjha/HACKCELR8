@@ -33,28 +33,28 @@
 
 <!-- Hero Section -->
 <section id="home" class="hero">
-  <div class="hero-logos">
+  <div class="hero-logos" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 15px;">
     <!-- IEEE SSIT: left-most -->
     <img src="./images/Logo IEEE SSIT.png"
          alt="IEEE SSIT Logo"
          class="hero-logo-left"
-         style="order:1;">
+         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
 
     <!-- IEEE Student Branch: middle-left (slightly larger) -->
     <img src="./images/IEEE_Student_Branch_Logo.png"
          alt="IEEE Student Branch Logo"
-         style="order:2; height: clamp(34px, 5.5vw, 60px); max-width: 28%;">
+         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
 
     <!-- ECE Dept: middle-right (slightly larger) -->
     <img src="./images/ECE Logo.png"
          alt="ECE Logo"
-         style="order:3; height: clamp(34px, 5.5vw, 60px); max-width: 28%;">
+         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
 
     <!-- SRM: right-most -->
     <img src="./images/SRM-Institute-of-Science-and-Technology-Logo.png"
          alt="SRM IST Logo"
          class="hero-logo-right"
-         style="order:4;">
+         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
   </div>
 
   <div class="hero-content">
@@ -68,94 +68,245 @@
   </div>
 </section>
 
-   <section id="about" class="about"> 
-    <div class="container"> 
-        <h2>About HACKCELR8</h2> 
-        <p class="about-subtitle">Revolutionizing the Future of Technology</p> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            height: 3px;
+            width: 80px;
+            background-color: #007BFF;
+            border-radius: 50px;
+        }
+        
+        .about-subtitle {
+            text-align: center;
+            margin: .25rem 0 2rem;
+            font-family: 'Orbitron', system-ui, sans-serif;
+            letter-spacing: .06em;
+            color: #dc143c;
+        }
 
-        <div class="about-grid"> 
-            <article class="about-card about-card--intro"> 
-                <h3>24-hour sprint of ideas</h3> 
-                <p> 
-                    HACKCELR8 is more than just a hackathon—it’s a 24-hour burst of ideas, 
-                    creativity and collaboration. Over one intense day, teams of students and 
-                    innovators brainstorm, build, and bring bold projects to life. 
-                </p> 
-            </article> 
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 2rem;
+            justify-content: center;
+            align-items: stretch;
+        }
 
-            <article class="about-card"> 
-                <div class="about-icon"><i class="fas fa-calendar"></i></div> 
-                <h4>Date</h4> 
-                <p>September 15, 2025</p> 
-            </article> 
+        .about-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(220,20,60,0.25);
+            border-radius: 16px;
+            padding: clamp(14px, 2.5vw, 20px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.05) inset;
+            backdrop-filter: blur(8px);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .about-card p { margin: 0; line-height: 1.6; color: #f2f2f2; }
+        .about-card.larger-card {
+            padding: clamp(20px, 3.5vw, 30px);
+        }
 
-            <article class="about-card"> 
-                <div class="about-icon"><i class="fas fa-clock"></i></div> 
-                <h4>Start Time</h4> 
-                <p>9:00 AM IST</p> 
-            </article> 
+        .about-card--intro {
+            grid-column: span 3;
+            text-align: center;
+        }
 
-            <article class="about-card"> 
-                <div class="about-icon"><i class="fas fa-users"></i></div> 
-                <h4>Team Size</h4> 
-                <p>2–4 members</p> 
-            </article> 
+        .about-card:not(.about-card--intro) {
+            grid-column: span 1;
+        }
 
-            <article class="about-card"> 
-                <div class="about-icon"><i class="fas fa-ticket-alt"></i></div> 
-                <h4>Registration Fee</h4> 
-                <p>₹300 per team · ₹250 (IEEE members)</p> 
-            </article> 
+        .about-icon {
+            width: 46px; height: 46px; display: grid; place-items: center;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #dc143c, #b22222);
+            color: #fff;
+            margin: 0 auto .75rem;
+            box-shadow: 0 6px 16px rgba(220,20,60,0.35);
+        }
+        .about-card h3, .about-card h4 { margin: .25rem 0 .5rem; font-family: 'Rajdhani', system-ui, sans-serif; font-weight: 700; color: #fff; }
 
-            <article class="about-card"> 
-                <div class="about-icon"><i class="fas fa-trophy"></i></div> 
-                <h4>Prize Pool</h4> 
-                <p>₹10,000</p> 
-            </article> 
+        .about-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        .about-badges .badge {
+            background-color: #b22222;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .about-badges .badge i {
+            margin-right: 0.5rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary {
+            background-color: #b22222;
+            color: #fff;
+            border: 2px solid #b22222;
+        }
+        .btn-secondary:hover {
+            background-color: #0056b3;
+        }
 
-            <article class="about-card about-card--venue"> 
-                <div class="about-icon"><i class="fas fa-map-marker-alt"></i></div> 
-                <h4>Venue</h4> 
-                <p>Mini Hall 1, SRM IST, Kattankulathur, Chennai-603203</p> 
-                <a href="https://maps.app.goo.gl/hHDSVr46oga31MSS6" target="_blank" class="btn btn-secondary location-btn">Open in Maps</a> 
-            </article> 
-        </div> 
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+            }
+            .about-card--intro,
+            .about-card:not(.about-card--intro) {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
 
-        <div class="about-badges"> 
-            <span class="badge"><i class="fas fa-bolt"></i> 24-hour build</span> 
-            <span class="badge"><i class="fas fa-people-carry"></i> Mentors & workshops</span> 
-            <span class="badge"><i class="fas fa-shield-alt"></i> Fair & inclusive</span> 
-        </div> 
-    </div> 
-</section>
-    <!-- Tracks Section -->
-    <section id="tracks" class="tracks">
+    <section id="about" class="about">
         <div class="container">
-            <h2>Tracks</h2>
-            <div class="tracks-grid themed-tracks">
-                <div class="track-card themed">
-                    <i class="fas fa-leaf"></i>
-                    <h3>Sustainable Development</h3>
-                    <p>Build solutions that tackle environmental challenges, promote renewable energy, and drive sustainability for a greener future.</p>
-                </div>
-                <div class="track-card themed">
-                    <i class="fas fa-brain"></i>
-                    <h3>AI/ML</h3>
-                    <p>Leverage artificial intelligence and machine learning to create intelligent systems, innovative applications, and impactful real-world solutions.</p>
-                </div>
-                <div class="track-card themed">
-                    <i class="fas fa-rocket"></i>
-                    <h3>Space Exploration</h3>
-                    <p>Design technologies for the next frontier—projects related to satellite communication, autonomous rovers, and space data analysis.</p>
-                </div>
-                <div class="track-card themed">
-                    <i class="fas fa-code-branch"></i>
-                    <h3>Open Innovation</h3>
-                    <p>Think beyond boundaries! Develop creative, cross-domain, and open-source solutions that solve pressing real-world problems.</p>
-                </div>
+            <h2>About HACKCELR8</h2>
+            <p class="about-subtitle">Revolutionizing the Future of Technology</p>
+            
+            <div class="about-grid">
+                <article class="about-card about-card--intro">
+                    <h3>24-hour sprint of ideas</h3>
+                    <p>
+                        HACKCELR8 is more than just a hackathon—it’s a 24-hour burst of ideas,
+                        creativity and collaboration. Over one intense day, teams of students and
+                        innovators brainstorm, build, and bring bold projects to life.
+                    </p>
+                </article>
+
+                <article class="about-card larger-card">
+                    <div class="about-icon"><i class="fas fa-calendar"></i></div>
+                    <h4>Date</h4>
+                    <p>September 15, 2025</p>
+                </article>
+
+                <article class="about-card larger-card">
+                    <div class="about-icon"><i class="fas fa-clock"></i></div>
+                    <h4>Start Time</h4>
+                    <p>9:00 AM IST</p>
+                </article>
+
+                <article class="about-card larger-card">
+                    <div class="about-icon"><i class="fas fa-users"></i></div>
+                    <h4>Team Size</h4>
+                    <p>2–4 members</p>
+                </article>
+
+                <article class="about-card">
+                    <div class="about-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <h4>Registration Fee</h4>
+                    <p>₹300 per team · ₹250 (IEEE members)</p>
+                </article>
+
+                <article class="about-card">
+                    <div class="about-icon"><i class="fas fa-trophy"></i></div>
+                    <h4>Prize Pool</h4>
+                    <p>₹10,000</p>
+                </article>
+                
+                <article class="about-card">
+                    <div class="about-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h4>Venue</h4>
+                    <p>Mini Hall 1, SRM IST, Kattankulathur, Chennai-603203</p>
+                    <a href="https://maps.app.goo.gl/hHDSVr46oga31MSS6" target="_blank" class="btn btn-secondary location-btn">Open in Maps</a>
+                </article>
+            </div>
+
+            <div class="about-badges">
+                <span class="badge"><i class="fas fa-bolt"></i> 24-hour build</span>
+                <span class="badge"><i class="fas fa-people-carry"></i> Mentors & workshops</span>
+                <span class="badge"><i class="fas fa-shield-alt"></i> Fair & inclusive</span>
             </div>
         </div>
     </section>
+
+</body>
+</html>
+<!-- Tracks Section -->
+<section id="tracks" class="tracks">
+    <div class="container">
+        <h2>Tracks</h2>
+        <div class="tracks-grid themed-tracks" style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 1rem; padding-bottom: 1rem;">
+            <div class="track-card themed" style="flex: 0 0 180px; text-align: center;">
+                <i class="fas fa-leaf"></i>
+                <h3>Sustainable Development</h3>
+                <p>Build solutions that tackle environmental challenges, promote renewable energy, and drive sustainability for a greener future.</p>
+            </div>
+            <div class="track-card themed" style="flex: 0 0 180px; text-align: center;">
+                <i class="fas fa-brain"></i>
+                <h3>AI/ML</h3>
+                <p>Leverage artificial intelligence and machine learning to create intelligent systems, innovative applications, and impactful real-world solutions.</p>
+            </div>
+            <div class="track-card themed" style="flex: 0 0 180px; text-align: center;">
+                <i class="fas fa-rocket"></i>
+                <h3>Space Exploration</h3>
+                <p>Design technologies for the next frontier—projects related to satellite communication, autonomous rovers, and space data analysis.</p>
+            </div>
+            <div class="track-card themed" style="flex: 0 0 180px; text-align: center;">
+                <i class="fas fa-code-branch"></i>
+                <h3>Open Innovation</h3>
+                <p>Think beyond boundaries! Develop creative, cross-domain, and open-source solutions that solve pressing real-world problems.</p>
+            </div>
+            <div class="track-card themed" style="flex: 0 0 180px; text-align: center;">
+                <i class="fas fa-chart-line"></i>
+                <h3>FinTech & Business Solutions</h3>
+                <p>Create innovative solutions in digital finance, payments, blockchain, business analytics, and enterprise systems to drive smarter businesses.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
   <section id="sponsors" class="sponsors">
     <div class="container">
