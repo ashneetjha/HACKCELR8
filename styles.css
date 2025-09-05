@@ -390,7 +390,7 @@ section h2::after {
   color: #fff; min-height: 100vh; display: flex; align-items: center;
 }
 .tracks h2 { color: #fff; }
-.tracks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; margin-top: 2rem; }
+.tracks-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2rem; margin-top: 2rem; }
 .themed-tracks .track-card.themed {
   background: linear-gradient(135deg, rgba(220,20,60,0.15) 0%, rgba(0,0,0,0.7) 100%);
   border: 2px solid #dc143c; box-shadow: 0 8px 32px rgba(220,20,60,0.15), 0 1.5px 0 rgba(255,255,255,0.08) inset;
@@ -674,7 +674,6 @@ section h2::after {
 }
 
 @media (max-width: 900px) {
-  .tracks-grid { grid-template-columns: 1fr 1fr; }
   .tracks-row { flex-direction: column; gap: 2rem; align-items: center; }
 }
 
@@ -718,7 +717,8 @@ section h2::after {
     justify-content: center;        /* ensure centered on mobile too */
   }
 
-  .tracks-grid, .sponsors-grid, .judges-grid { grid-template-columns: 1fr; }
+  .tracks-grid { grid-template-columns: 1fr; }
+  .sponsors-grid, .judges-grid { grid-template-columns: 1fr; }
 
   .register-contact-content { grid-template-columns: 1fr; gap: 2rem; }
   .google-form-container { padding: 1.5rem 1.25rem; }
