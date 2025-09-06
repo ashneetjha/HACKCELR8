@@ -1,500 +1,719 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HACKCELR8 - Technology Hackathon</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>HACKCELR8 - Technology Hackathon</title>
+
+  <!-- Core Styles / Fonts / Icons -->
+  <link rel="stylesheet" href="styles.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Font Awesome 6 (primary) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  <!-- (Optional) Font Awesome 5 for legacy icon names used in content like 'fa-people-carry' -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
+
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-HJ4NC9KJN0"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-HJ4NC9KJN0");
+  </script>
+
+  <!-- Inline styles that were previously inside a nested <head>; consolidated here to keep one valid document -->
+  <style>
+    /* Utility container used across sections */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---------- About Section (moved from nested HTML) ---------- */
+    .about h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    .about h2::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      height: 3px;
+      width: 80px;
+      background-color: #007bff;
+      border-radius: 50px;
+    }
+
+    .about-subtitle {
+      text-align: center;
+      margin: 0.25rem 0 2rem;
+      font-family: "Orbitron", system-ui, sans-serif;
+      letter-spacing: 0.06em;
+      color: #dc143c;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 2rem;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .about-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(220, 20, 60, 0.25);
+      border-radius: 16px;
+      padding: clamp(14px, 2.5vw, 20px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+      backdrop-filter: blur(8px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .about-card p {
+      margin: 0;
+      line-height: 1.6;
+      color: #f2f2f2;
+    }
+    .about-card.larger-card {
+      padding: clamp(20px, 3.5vw, 30px);
+    }
+
+    .about-card--intro {
+      grid-column: span 3;
+      text-align: center;
+    }
+    .about-card:not(.about-card--intro) {
+      grid-column: span 1;
+    }
+
+    .about-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(45deg, #dc143c, #b22222);
+      color: #fff;
+      margin: 0 auto 0.75rem;
+      box-shadow: 0 6px 16px rgba(220, 20, 60, 0.35);
+    }
+    .about-card h3,
+    .about-card h4 {
+      margin: 0.25rem 0 0.5rem;
+      font-family: "Rajdhani", system-ui, sans-serif;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .about-badges {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .about-badges .badge {
+      background-color: #b22222;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .about-badges .badge i {
+      margin-right: 0.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .btn-secondary {
+      background-color: #b22222;
+      color: #fff;
+      border: 2px solid #b22222;
+    }
+    .btn-secondary:hover {
+      background-color: #0056b3;
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+      }
+      .about-card--intro,
+      .about-card:not(.about-card--intro) {
+        grid-column: span 1;
+      }
+    }
+    /* ---------- End About Section styles ---------- */
+
+    /* Ensure body has a neutral base if styles.css misses it */
+    body {
+      margin: 0;
+      color: #333;
+      line-height: 1.6;
+      background-color: #0d0d0f; /* matches the glassy cards' contrast */
+    }
+
+    /* Optional small polish for scroll-to-top button hover */
+    #scrollToTopBtn:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="./images/hackcelr8-logo.png" alt="HACKCELR8 Logo" class="nav-logo-img">
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#tracks">Tracks</a></li>
-                <li><a href="#sponsors">Sponsors</a></li>
-                <li><a href="#judges">Judges</a></li>
-                <li><a href="#register-contact">Register & Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
-
-<!-- Hero Section -->
-<section id="home" class="hero">
-  <div class="hero-logos" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 15px;">
-    <!-- IEEE SSIT: left-most -->
-    <img src="./images/Logo IEEE SSIT.png"
-         alt="IEEE SSIT Logo"
-         class="hero-logo-left"
-         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
-
-    <!-- IEEE Student Branch: middle-left (slightly larger) -->
-    <img src="./images/IEEE_Student_Branch_Logo.png"
-         alt="IEEE Student Branch Logo"
-         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
-
-    <!-- ECE Dept: middle-right (slightly larger) -->
-    <img src="./images/ECE Logo.png"
-         alt="ECE Logo"
-         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
-
-    <!-- SRM: right-most -->
-    <img src="./images/SRM-Institute-of-Science-and-Technology-Logo.png"
-         alt="SRM IST Logo"
-         class="hero-logo-right"
-         style="height: clamp(34px, 5.5vw, 60px); max-width: 25%;">
-  </div>
-
-  <div class="hero-content">
-    <h1>HACKCELR8</h1>
-    <p class="subtitle">Where Solution Meets Speed</p>
-    <p class="description">Join the ultimate hackathon experience</p>
-    <div class="hero-buttons">
-      <a href="https://forms.gle/JtfDzQpY5hWeGjG79" class="btn btn-primary">Register Now</a>
-      <a href="#about" class="btn btn-secondary">Learn More</a>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img
+          src="./images/hackcelr8-logo.png"
+          alt="HACKCELR8 Logo"
+          class="nav-logo-img"
+        />
+      </div>
+      <ul class="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#tracks">Tracks</a></li>
+        <li><a href="#sponsors">Sponsors</a></li>
+        <li><a href="#judges">Judges</a></li>
+        <li><a href="#register-contact">Register &amp; Contact</a></li>
+      </ul>
+      <div class="hamburger" aria-label="Toggle navigation" role="button" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
-  </div>
-</section>
+  </nav>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            text-align: center;
-        }
-        h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-        }
-        h2::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: -10px;
-            transform: translateX(-50%);
-            height: 3px;
-            width: 80px;
-            background-color: #007BFF;
-            border-radius: 50px;
-        }
-        
-        .about-subtitle {
-            text-align: center;
-            margin: .25rem 0 2rem;
-            font-family: 'Orbitron', system-ui, sans-serif;
-            letter-spacing: .06em;
-            color: #dc143c;
-        }
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div
+      class="hero-logos"
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 15px;
+      "
+    >
+      <!-- IEEE SSIT: left-most -->
+      <img
+        src="./images/Logo IEEE SSIT.png"
+        alt="IEEE SSIT Logo"
+        class="hero-logo-left"
+        style="height: clamp(34px, 5.5vw, 60px); max-width: 25%"
+      />
 
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 1fr;
-            gap: 2rem;
-            justify-content: center;
-            align-items: stretch;
-        }
+      <!-- IEEE Student Branch: middle-left (slightly larger) -->
+      <img
+        src="./images/IEEE_Student_Branch_Logo.png"
+        alt="IEEE Student Branch Logo"
+        style="height: clamp(34px, 5.5vw, 60px); max-width: 25%"
+      />
 
-        .about-card {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(220,20,60,0.25);
-            border-radius: 16px;
-            padding: clamp(14px, 2.5vw, 20px);
-            box-shadow: 0 10px 24px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.05) inset;
-            backdrop-filter: blur(8px);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .about-card p { margin: 0; line-height: 1.6; color: #f2f2f2; }
-        .about-card.larger-card {
-            padding: clamp(20px, 3.5vw, 30px);
-        }
+      <!-- ECE Dept: middle-right (slightly larger) -->
+      <img
+        src="./images/ECE Logo.png"
+        alt="ECE Logo"
+        style="height: clamp(34px, 5.5vw, 60px); max-width: 25%"
+      />
 
-        .about-card--intro {
-            grid-column: span 3;
-            text-align: center;
-        }
+      <!-- SRM: right-most -->
+      <img
+        src="./images/SRM-Institute-of-Science-and-Technology-Logo.png"
+        alt="SRM IST Logo"
+        class="hero-logo-right"
+        style="height: clamp(34px, 5.5vw, 60px); max-width: 25%"
+      />
+    </div>
 
-        .about-card:not(.about-card--intro) {
-            grid-column: span 1;
-        }
+    <div class="hero-content">
+      <h1>HACKCELR8</h1>
+      <p class="subtitle">Where Solution Meets Speed</p>
+      <p class="description">Join the ultimate hackathon experience</p>
+      <div class="hero-buttons">
+        <a
+          href="https://forms.gle/JtfDzQpY5hWeGjG79"
+          class="btn btn-primary"
+          target="_blank"
+          rel="noopener"
+          >Register Now</a
+        >
+        <a href="#about" class="btn btn-secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
 
-        .about-icon {
-            width: 46px; height: 46px; display: grid; place-items: center;
-            border-radius: 12px;
-            background: linear-gradient(45deg, #dc143c, #b22222);
-            color: #fff;
-            margin: 0 auto .75rem;
-            box-shadow: 0 6px 16px rgba(220,20,60,0.35);
-        }
-        .about-card h3, .about-card h4 { margin: .25rem 0 .5rem; font-family: 'Rajdhani', system-ui, sans-serif; font-weight: 700; color: #fff; }
-
-        .about-badges {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 3rem;
-        }
-        .about-badges .badge {
-            background-color: #b22222;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        .about-badges .badge i {
-            margin-right: 0.5rem;
-        }
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .btn-secondary {
-            background-color: #b22222;
-            color: #fff;
-            border: 2px solid #b22222;
-        }
-        .btn-secondary:hover {
-            background-color: #0056b3;
-        }
-
-        @media (max-width: 768px) {
-            .about-grid {
-                grid-template-columns: 1fr;
-                grid-auto-rows: auto;
-            }
-            .about-card--intro,
-            .about-card:not(.about-card--intro) {
-                grid-column: span 1;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2>About HACKCELR8</h2>
-            <p class="about-subtitle">Revolutionizing the Future of Technology</p>
-            
-            <div class="about-grid">
-                <article class="about-card about-card--intro">
-                    <h3>24-hour sprint of ideas</h3>
-                    <p>
-                        HACKCELR8 is more than just a hackathon—it’s a 24-hour burst of ideas,
-                        creativity and collaboration. Over one intense day, teams of students and
-                        innovators brainstorm, build, and bring bold projects to life.
-                    </p>
-                </article>
-
-                <article class="about-card larger-card">
-                    <div class="about-icon"><i class="fas fa-calendar"></i></div>
-                    <h4>Date</h4>
-                    <p>September 15, 2025</p>
-                </article>
-
-                <article class="about-card larger-card">
-                    <div class="about-icon"><i class="fas fa-clock"></i></div>
-                    <h4>Start Time</h4>
-                    <p>9:00 AM IST</p>
-                </article>
-
-                <article class="about-card larger-card">
-                    <div class="about-icon"><i class="fas fa-users"></i></div>
-                    <h4>Team Size</h4>
-                    <p>2–4 members</p>
-                </article>
-
-                <article class="about-card">
-                    <div class="about-icon"><i class="fas fa-ticket-alt"></i></div>
-                    <h4>Registration Fee</h4>
-                    <p>₹300 per team · ₹250 (IEEE members)</p>
-                </article>
-
-                <article class="about-card">
-                    <div class="about-icon"><i class="fas fa-trophy"></i></div>
-                    <h4>Prize Pool</h4>
-                    <p>₹10,000</p>
-                </article>
-                
-                <article class="about-card">
-                    <div class="about-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h4>Venue</h4>
-                    <p>Mini Hall 1, SRM IST, Kattankulathur, Chennai-603203</p>
-                    <a href="https://maps.app.goo.gl/hHDSVr46oga31MSS6" target="_blank" class="btn btn-secondary location-btn">Open in Maps</a>
-                </article>
-            </div>
-
-            <div class="about-badges">
-                <span class="badge"><i class="fas fa-bolt"></i> 24-hour build</span>
-                <span class="badge"><i class="fas fa-people-carry"></i> Mentors & workshops</span>
-                <span class="badge"><i class="fas fa-shield-alt"></i> Fair & inclusive</span>
-            </div>
-        </div>
-    </section>
-
-</body>
-</html>
-<!-- Tracks Section -->
-<section id="tracks" class="tracks">
+  <!-- About Section (was previously a nested HTML doc; now correctly in-page) -->
+  <section id="about" class="about">
     <div class="container">
-        <h2>Tracks</h2>
-        <div class="tracks-grid themed-tracks">
-            <div class="track-card themed">
-                <i class="fas fa-leaf"></i>
-                <h3>Sustainable Development</h3>
-                <p>Build solutions that tackle environmental challenges, promote renewable energy, and drive sustainability for a greener future.</p>
-            </div>
-            <div class="track-card themed">
-                <i class="fas fa-brain"></i>
-                <h3>AI/ML</h3>
-                <p>Leverage artificial intelligence and machine learning to create intelligent systems, innovative applications, and impactful real-world solutions.</p>
-            </div>
-            <div class="track-card themed">
-                <i class="fas fa-rocket"></i>
-                <h3>Space Exploration</h3>
-                <p>Design technologies for the next frontier—projects related to satellite communication, autonomous rovers, and space data analysis.</p>
-            </div>
-            <div class="track-card themed">
-                <i class="fas fa-code-branch"></i>
-                <h3>Open Innovation</h3>
-                <p>Think beyond boundaries! Develop creative, cross-domain, and open-source solutions that solve pressing real-world problems.</p>
-            </div>
-            <div class="track-card themed">
-                <i class="fas fa-chart-line"></i>
-                <h3>FinTech & Business Solutions</h3>
-                <p>Create innovative solutions in digital finance, payments, blockchain, business analytics, and enterprise systems to drive smarter businesses.</p>
-            </div>
-        </div>
-    </div>
-</section>
+      <h2>About HACKCELR8</h2>
+      <p class="about-subtitle">Revolutionizing the Future of Technology</p>
 
+      <div class="about-grid">
+        <article class="about-card about-card--intro">
+          <h3>24-hour sprint of ideas</h3>
+          <p>
+            HACKCELR8 is more than just a hackathon—it’s a 24-hour burst of ideas,
+            creativity and collaboration. Over one intense day, teams of students and
+            innovators brainstorm, build, and bring bold projects to life.
+          </p>
+        </article>
+
+        <article class="about-card larger-card">
+          <div class="about-icon"><i class="fas fa-calendar"></i></div>
+          <h4>Date</h4>
+          <p>September 15, 2025</p>
+        </article>
+
+        <article class="about-card larger-card">
+          <div class="about-icon"><i class="fas fa-clock"></i></div>
+          <h4>Start Time</h4>
+          <p>9:00 AM IST</p>
+        </article>
+
+        <article class="about-card larger-card">
+          <div class="about-icon"><i class="fas fa-users"></i></div>
+          <h4>Team Size</h4>
+          <p>2–4 members</p>
+        </article>
+
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-ticket-alt"></i></div>
+          <h4>Registration Fee</h4>
+          <p>₹300 per team · ₹250 (IEEE members)</p>
+        </article>
+
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-trophy"></i></div>
+          <h4>Prize Pool</h4>
+          <p>₹10,000</p>
+        </article>
+
+        <article class="about-card">
+          <div class="about-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <h4>Venue</h4>
+          <p>Mini Hall 1, SRM IST, Kattankulathur, Chennai-603203</p>
+          <a
+            href="https://maps.app.goo.gl/hHDSVr46oga31MSS6"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-secondary location-btn"
+            >Open in Maps</a
+          >
+        </article>
+      </div>
+
+      <div class="about-badges">
+        <span class="badge"><i class="fas fa-bolt"></i> 24-hour build</span>
+        <span class="badge"
+          ><i class="fas fa-people-carry"></i> Mentors &amp; workshops</span
+        >
+        <span class="badge"
+          ><i class="fas fa-shield-alt"></i> Fair &amp; inclusive</span
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- Tracks Section -->
+  <section id="tracks" class="tracks">
+    <div class="container">
+      <h2>Tracks</h2>
+
+      <div class="tracks-grid themed-tracks">
+        <div class="track-card themed">
+          <i class="fas fa-leaf"></i>
+          <h3>Sustainable Development</h3>
+          <p>
+            Build solutions that tackle environmental challenges, promote renewable energy,
+            and drive sustainability for a greener future.
+          </p>
+        </div>
+
+        <div class="track-card themed">
+          <i class="fas fa-brain"></i>
+          <h3>AI/ML</h3>
+          <p>
+            Leverage artificial intelligence and machine learning to create intelligent
+            systems, innovative applications, and impactful real-world solutions.
+          </p>
+        </div>
+
+        <div class="track-card themed">
+          <i class="fas fa-rocket"></i>
+          <h3>Space Exploration</h3>
+          <p>
+            Design technologies for the next frontier—projects related to satellite
+            communication, autonomous rovers, and space data analysis.
+          </p>
+        </div>
+
+        <div class="track-card themed">
+          <i class="fas fa-code-branch"></i>
+          <h3>Open Innovation</h3>
+          <p>
+            Think beyond boundaries! Develop creative, cross-domain, and open-source
+            solutions that solve pressing real-world problems.
+          </p>
+        </div>
+
+        <div class="track-card themed">
+          <i class="fas fa-chart-line"></i>
+          <h3>FinTech &amp; Business Solutions</h3>
+          <p>
+            Create innovative solutions in digital finance, payments, blockchain, business
+            analytics, and enterprise systems to drive smarter businesses.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sponsors Section -->
   <section id="sponsors" class="sponsors">
     <div class="container">
-        <h2>Our Sponsors</h2>
-        <div class="sponsors-grid">
-            <div class="sponsor-placeholder sponsor-1">
-                <p></p>
-            </div>
-            <div class="sponsor-placeholder sponsor-2">
-                <i class="fas fa-building"></i>
-                <h3>Sponsor 2</h3>
-                <p>Details coming soon</p>
-            </div>
+      <h2>Our Sponsors</h2>
+      <div class="sponsors-grid">
+        <div class="sponsor-placeholder sponsor-1">
+          <p></p>
         </div>
+        <div class="sponsor-placeholder sponsor-2">
+          <i class="fas fa-building"></i>
+          <h3>Sponsor 2</h3>
+          <p>Details coming soon</p>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-    <section id="judges" class="judges">
+  <!-- Judges Section -->
+  <section id="judges" class="judges">
     <div class="container">
-        <h2>Meet Our Judges</h2>
-        <div class="judges-grid">
-            <div class="judge-placeholder judge-1">
-                <i class="fas fa-user-tie"></i>
-                <h3>Judge 1</h3>
-                <p>Details coming soon</p>
-            </div>
-            <div class="judge-placeholder judge-2">
-                <i class="fas fa-user-tie"></i>
-                <h3>Judge 2</h3>
-                <p>Details coming soon</p>
-            </div>
-            <div class="judge-placeholder judge-3">
-                <i class="fas fa-user-tie"></i>
-                <h3>Judge 3</h3>
-                <p>Details coming soon</p>
-            </div>
+      <h2>Meet Our Judges</h2>
+
+      <div class="judges-grid">
+        <div class="judge-placeholder judge-1">
+          <i class="fas fa-user-tie"></i>
+          <h3>Judge 1</h3>
+          <p>Details coming soon</p>
         </div>
+
+        <div class="judge-placeholder judge-2">
+          <i class="fas fa-user-tie"></i>
+          <h3>Judge 2</h3>
+          <p>Details coming soon</p>
+        </div>
+
+        <div class="judge-placeholder judge-3">
+          <i class="fas fa-user-tie"></i>
+          <h3>Judge 3</h3>
+          <p>Details coming soon</p>
+        </div>
+      </div>
     </div>
-</section>
-    <!-- Register and Contact Section -->
-    <section id="register-contact" class="register-contact">
-        <div class="container">
-            <h2>Register & Contact Us</h2>
-            <div class="register-contact-content">
-                <!-- Registration Section -->
-                <div class="registration-section">
-                    <h3>Ready to Race?</h3>
-                    <div class="google-form-container">
-                        <h4>Register for HACKCELR8</h4>
-                        <p>Click the button below to complete your registration through our Google Form</p>
-                        <a href="https://forms.gle/JtfDzQpY5hWeGjG79" target="_blank" class="btn btn-primary google-form-btn">
-                            <i class="fas fa-external-link-alt"></i>
-                            Register Now
-                        </a>
-                        <p class="form-note">You will be redirected to our official registration form</p>
-                        <div class="qr-image-container" style="text-align:center; margin: 2rem 0;">
-                            <img src="./images/Hackcelr8 Reg QR.png" alt="Hackcelr8 Registration QR" style="max-width:220px; width:100%; border-radius:16px; box-shadow:0 4px 24px rgba(220,20,60,0.15);">
-                            <p style="color:#dc143c; font-size:0.95rem; margin-top:0.5rem;">Scan to Register Instantly</p>
-                        </div>
-                        <div class="social-links">
-                            <h5>Follow us on</h5>
-                            <div class="social-icons">
-                                <a href="https://www.linkedin.com/company/ieee-srmist-ssit/" target="_blank" class="social-link">
-                                    <i class="fab fa-linkedin"></i>
-                                </a>
-                                <a href="https://www.instagram.com/ieee_srmist_ssit" target="_blank" class="social-link">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  </section>
 
-                <!-- Contact Section -->
-                <div class="contact-section">
-                    <h3>Get in Touch</h3>
-                    <div class="contact-content">
-                        <div class="contact-info">
-                            <div class="contact-item">
-                                <i class="fas fa-envelope"></i>
-                                <div class="contact-details">
-                                    <h4>Email</h4>
-                                    <p>studentchapterieee@gmail.com</p>
-                                </div>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-phone"></i>
-                                <div class="contact-details">
-                                    <h4>Phone Numbers</h4>
-                                    <p>+91 72008 91351</p>
-                                    <p>+91 89200 60135</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="contact-form">
-                            <h4>Send us a Message</h4>
-                            <form id="contactForm" action="mailto:studentchapterieee@gmail.com" method="post" enctype="text/plain">
-                                <input type="text" name="name" placeholder="Your Name" required>
-                                <input type="email" name="email" placeholder="Your Email" required>
-                                <textarea name="message" placeholder="Your Message" required></textarea>
-                                <button type="submit" class="btn btn-primary">Send Message</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+  <!-- Register and Contact Section -->
+  <section id="register-contact" class="register-contact">
+    <div class="container">
+      <h2>Register &amp; Contact Us</h2>
+
+      <div class="register-contact-content">
+        <!-- Registration Section -->
+        <div class="registration-section">
+          <h3>Ready to Race?</h3>
+
+          <div class="google-form-container">
+            <h4>Register for HACKCELR8</h4>
+            <p>
+              Click the button below to complete your registration through our Google
+              Form
+            </p>
+
+            <a
+              href="https://forms.gle/JtfDzQpY5hWeGjG79"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-primary google-form-btn"
+            >
+              <i class="fas fa-external-link-alt"></i>
+              Register Now
+            </a>
+
+            <p class="form-note">
+              You will be redirected to our official registration form
+            </p>
+
+            <div
+              class="qr-image-container"
+              style="text-align: center; margin: 2rem 0"
+            >
+              <img
+                src="./images/Hackcelr8 Reg QR.png"
+                alt="Hackcelr8 Registration QR"
+                style="
+                  max-width: 220px;
+                  width: 100%;
+                  border-radius: 16px;
+                  box-shadow: 0 4px 24px rgba(220, 20, 60, 0.15);
+                "
+              />
+              <p
+                style="
+                  color: #dc143c;
+                  font-size: 0.95rem;
+                  margin-top: 0.5rem;
+                "
+              >
+                Scan to Register Instantly
+              </p>
             </div>
+
+            <div class="social-links">
+              <h5>Follow us on</h5>
+              <div class="social-icons">
+                <a
+                  href="https://www.linkedin.com/company/ieee-srmist-ssit/"
+                  target="_blank"
+                  rel="noopener"
+                  class="social-link"
+                  aria-label="LinkedIn"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a
+                  href="https://www.instagram.com/ieee_srmist_ssit"
+                  target="_blank"
+                  rel="noopener"
+                  class="social-link"
+                  aria-label="Instagram"
+                >
+                  <i class="fab fa-instagram"></i>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 HACKCELR8. All rights belong to IEEE SRMIST SSIT SBC.</p>
+        <!-- Contact Section -->
+        <div class="contact-section">
+          <h3>Get in Touch</h3>
+
+          <div class="contact-content">
+            <div class="contact-info">
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <div class="contact-details">
+                  <h4>Email</h4>
+                  <p>studentchapterieee@gmail.com</p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <div class="contact-details">
+                  <h4>Phone Numbers</h4>
+                  <p>+91 72008 91351</p>
+                  <p>+91 89200 60135</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-form">
+              <h4>Send us a Message</h4>
+              <!-- NOTE: Using mailto posts the form via email client; consider a backend later for reliability -->
+              <form
+                id="contactForm"
+                action="mailto:studentchapterieee@gmail.com"
+                method="post"
+                enctype="text/plain"
+              >
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  required
+                />
+                <textarea
+                  name="message"
+                  placeholder="Your Message"
+                  required
+                ></textarea>
+                <button type="submit" class="btn btn-primary">
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-    </footer>
+        <!-- End Contact Section -->
+      </div>
+    </div>
+  </section>
 
-        <script src="script.js"></script>
-        <script>
-        // Responsive navbar scroll offset for fixed navbar
-        function getNavOffset() {
-            // Adjust offset for mobile and desktop
-            if (window.innerWidth <= 768) return -70;
-            return -100;
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>
+        &copy; 2025 HACKCELR8. All rights belong to IEEE SRMIST SSIT SBC.
+      </p>
+    </div>
+  </footer>
+
+  <!-- External script (if you have one) -->
+  <script src="script.js"></script>
+
+  <!-- Smooth section-centering scroll and Scroll-to-top button -->
+  <script>
+    // Responsive navbar scroll offset for fixed navbar
+    function getNavOffset() {
+      // Adjust offset for mobile and desktop
+      if (window.innerWidth <= 768) return -70;
+      return -100;
+    }
+
+    function scrollToSectionCenter(section) {
+      const rect = section.getBoundingClientRect();
+      const sectionHeight = rect.height;
+      const windowHeight = window.innerHeight;
+      const yOffset = getNavOffset();
+
+      let y =
+        rect.top +
+        window.pageYOffset +
+        yOffset -
+        windowHeight / 2 +
+        sectionHeight / 2;
+
+      const maxScroll = document.body.scrollHeight - windowHeight;
+      if (y < 0) y = 0;
+      if (y > maxScroll) y = maxScroll;
+
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: y, behavior: "smooth" });
+      });
+    }
+
+    document.querySelectorAll(".nav-menu a").forEach((link) => {
+      link.addEventListener("click", function (e) {
+        const href = this.getAttribute("href");
+        if (href && href.startsWith("#")) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            scrollToSectionCenter(target);
+          }
         }
-        function scrollToSectionCenter(section) {
-            const rect = section.getBoundingClientRect();
-            const sectionHeight = rect.height;
-            const windowHeight = window.innerHeight;
-            const yOffset = getNavOffset();
-            let y = rect.top + window.pageYOffset + yOffset - (windowHeight/2) + (sectionHeight/2);
-            const maxScroll = document.body.scrollHeight - windowHeight;
-            if (y < 0) y = 0;
-            if (y > maxScroll) y = maxScroll;
-            // Use requestAnimationFrame for reliable scrolling
-            requestAnimationFrame(() => {
-                window.scrollTo({ top: y, behavior: 'smooth' });
-            });
+      });
+    });
+
+    // Optional: hamburger toggle for mobile menus if your CSS supports it
+    (function () {
+      const burger = document.querySelector(".hamburger");
+      const menu = document.querySelector(".nav-menu");
+      if (!burger || !menu) return;
+
+      function toggleMenu() {
+        menu.classList.toggle("open");
+        burger.classList.toggle("open");
+      }
+
+      burger.addEventListener("click", toggleMenu);
+      burger.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleMenu();
         }
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href.startsWith('#')) {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        scrollToSectionCenter(target);
-                    }
-                }
-            });
-        });
+      });
+    })();
 
-        // Scroll to top button
-        const scrollBtn = document.createElement('button');
-        scrollBtn.id = 'scrollToTopBtn';
-        scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-        scrollBtn.style.position = 'fixed';
-        scrollBtn.style.bottom = '32px';
-        scrollBtn.style.right = '32px';
-        scrollBtn.style.zIndex = '9999';
-        scrollBtn.style.background = 'linear-gradient(45deg, #dc143c, #b22222)';
-        scrollBtn.style.color = 'white';
-        scrollBtn.style.border = 'none';
-        scrollBtn.style.borderRadius = '50%';
-        scrollBtn.style.width = '56px';
-        scrollBtn.style.height = '56px';
-        scrollBtn.style.fontSize = '2rem';
-        scrollBtn.style.boxShadow = '0 4px 16px rgba(220,20,60,0.25)';
-        scrollBtn.style.display = 'none';
-        scrollBtn.style.transition = 'opacity 0.3s';
-        document.body.appendChild(scrollBtn);
+    // Scroll to top button
+    const scrollBtn = document.createElement("button");
+    scrollBtn.id = "scrollToTopBtn";
+    scrollBtn.innerHTML = '<i class="fas fa-arrow-up" aria-hidden="true"></i>';
+    scrollBtn.style.position = "fixed";
+    scrollBtn.style.bottom = "32px";
+    scrollBtn.style.right = "32px";
+    scrollBtn.style.zIndex = "9999";
+    scrollBtn.style.background = "linear-gradient(45deg, #dc143c, #b22222)";
+    scrollBtn.style.color = "white";
+    scrollBtn.style.border = "none";
+    scrollBtn.style.borderRadius = "50%";
+    scrollBtn.style.width = "56px";
+    scrollBtn.style.height = "56px";
+    scrollBtn.style.fontSize = "2rem";
+    scrollBtn.style.boxShadow = "0 4px 16px rgba(220,20,60,0.25)";
+    scrollBtn.style.display = "none";
+    scrollBtn.style.transition = "opacity 0.3s";
+    scrollBtn.setAttribute("aria-label", "Scroll to top");
+    document.body.appendChild(scrollBtn);
 
-        scrollBtn.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+    scrollBtn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
-        window.addEventListener('scroll', function() {
-            // Show button after leaving home section
-            const homeSection = document.getElementById('home');
-            if (!homeSection) return;
-            const homeBottom = homeSection.getBoundingClientRect().bottom;
-            if (homeBottom < 0) {
-                scrollBtn.style.display = 'block';
-                scrollBtn.style.opacity = '1';
-            } else {
-                scrollBtn.style.opacity = '0';
-                setTimeout(() => { scrollBtn.style.display = 'none'; }, 300);
-            }
-        });
-        </script>
+    window.addEventListener("scroll", function () {
+      const homeSection = document.getElementById("home");
+      if (!homeSection) return;
+      const homeBottom = homeSection.getBoundingClientRect().bottom;
+      if (homeBottom < 0) {
+        scrollBtn.style.display = "block";
+        scrollBtn.style.opacity = "1";
+      } else {
+        scrollBtn.style.opacity = "0";
+        setTimeout(() => {
+          scrollBtn.style.display = "none";
+        }, 300);
+      }
+    });
+  </script>
 </body>
 </html>
