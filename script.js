@@ -2,6 +2,7 @@
 // HACKCELR8 - script.js
 // Fixes first-click nav scroll; stable parallax; UI polish
 // + Custom F1 Triangular Cursor (desktop only)
+// Mobile perf mode: disables heavy animations on mobile
 // =======================
 
 // ---- DOM refs ----
@@ -12,8 +13,13 @@ const navbar    = document.querySelector('.navbar');
 // ---- Helpers ----
 const getNavH = () => (navbar ? navbar.getBoundingClientRect().height : 0);
 
+// Mobile performance mode: treat as "mobile" if coarse pointer or narrow viewport
+const isMobilePerfMode = () =>
+  window.matchMedia('(any-pointer: coarse)').matches || window.innerWidth <= 768;
+
 /**
  * Scroll to a section, accounting for fixed navbar height.
+ * On mobile perf mode, prefer instant scroll to avoid jank.
  * @param {HTMLElement} target
  * @param {"auto"|"smooth"} behavior
  */
@@ -21,7 +27,8 @@ function scrollToTarget(target, behavior = 'smooth') {
   if (!target) return;
   const navH = getNavH();
   const y = target.getBoundingClientRect().top + window.pageYOffset - navH - 8; // small padding
-  window.scrollTo({ top: y, behavior });
+  const finalBehavior = isMobilePerfMode() ? 'auto' : behavior;
+  window.scrollTo({ top: y, behavior: finalBehavior });
 }
 
 /**
@@ -39,8 +46,8 @@ function setSectionScrollMargins() {
  * Requires CSS classes: .cursor-tri and .cursor-trail
  */
 function initCustomCursor() {
-  // Disable on touch devices or when no fine pointer
-  if (window.matchMedia('(any-pointer: coarse)').matches) return;
+  // Disable on touch devices or when no fine pointer OR when in mobile perf mode
+  if (window.matchMedia('(any-pointer: coarse)').matches || isMobilePerfMode()) return;
 
   // Create cursor elements
   const tri   = document.createElement('div');
@@ -211,6 +218,7 @@ if (contactForm) {
 }
 
 // ---- Appear-on-scroll animations ----
+// Keep observer defined (cheap), but we won't use it in mobile perf mode.
 const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -223,9 +231,20 @@ const observer = new IntersectionObserver((entries) => {
 
 // ---- Initial setup on DOM ready ----
 document.addEventListener('DOMContentLoaded', () => {
-  // Fade scaffold
-  document.body.style.opacity = '0';
-  document.body.style.transition = 'opacity 0.5s ease';
+  const mobilePerf = isMobilePerfMode();
+
+  // Add a helper class for CSS to disable animations if needed
+  document.documentElement.classList.toggle('no-anim', mobilePerf);
+
+  // Fade scaffold (skip heavy transitions on mobile)
+  if (!mobilePerf) {
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease';
+  } else {
+    // Ensure body is visible instantly on mobile
+    document.body.style.opacity = '1';
+    document.body.style.transition = 'none';
+  }
 
   // Set section scroll margins based on current navbar height
   setSectionScrollMargins();
@@ -233,30 +252,45 @@ document.addEventListener('DOMContentLoaded', () => {
   // Keep margins true on resize/font-load
   window.addEventListener('resize', () => setSectionScrollMargins());
 
-  // Observe elements for animation
+  // Observe elements for animation (skip on mobile)
   const animateElements = document.querySelectorAll(
     '.track-card, .feature, .sponsor-placeholder, .judge-placeholder'
   );
-  animateElements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
 
-  // Card hover lift
-  const trackCards = document.querySelectorAll('.track-card');
-  trackCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.transform = 'translateY(-10px) scale(1.02)';
+  if (!mobilePerf) {
+    animateElements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateY(0) scale(1)';
+  } else {
+    // On mobile: render immediately without transitions to prevent jank
+    animateElements.forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.transition = 'none';
     });
-  });
+  }
 
-  // Parallax (background only, no layout shift) — disabled for touch or reduced-motion
+  // Card hover lift (desktop only)
+  if (!mobilePerf) {
+    const trackCards = document.querySelectorAll('.track-card');
+    trackCards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-10px) scale(1.02)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+  }
+
+  // Parallax (background only, no layout shift)
+  // Previously disabled for coarse pointer / prefers-reduced-motion;
+  // additionally disable if mobile perf mode.
   const enableParallax =
+    !mobilePerf &&
     !window.matchMedia('(any-pointer: coarse)').matches &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -277,13 +311,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 
-  // Init the F1 triangular cursor after DOM is ready
+  // Init the F1 triangular cursor after DOM is ready (desktop only)
   initCustomCursor();
 });
 
 // ---- Fade-in after full load ----
 window.addEventListener('load', () => {
-  document.body.style.opacity = '1';
+  // Only fade-in on desktop; mobile is already visible to avoid jank
+  if (!isMobilePerfMode()) {
+    document.body.style.opacity = '1';
+  }
 
   // If page loads with a hash, jump to the section correctly (no animation)
   if (location.hash) {
