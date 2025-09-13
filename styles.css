@@ -458,7 +458,9 @@ section h2::after {
   background-image: url('./images/LoadingBG.png');
 }
 
-/* ===== Judges Section ===== */
+/* ===== Judges Section (final merged) ===== */
+
+/* Page-level background */
 .judges {
   background:
     linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%),
@@ -466,64 +468,127 @@ section h2::after {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  background-repeat: no-repeat;
   color: #fff;
   min-height: 100vh;
   display: flex;
   align-items: center;
 }
 
+/* Section title */
 .judges h2 {
   color: #fff;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
+/* Grid: 3 horizontal cards on large screens */
 .judges-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  align-items: start;
 }
 
+/* Remove old background-image from placeholders */
+.judge-1, .judge-2, .judge-3 {
+  background-image: none !important;
+}
+
+/* Card container */
 .judge-placeholder {
-  /* Common styles for all judge containers */
-  background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%);
-  background-size: cover;
-  background-position: center;
-  padding: 2rem;
+  background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 100%);
+  padding: 1.5rem;
   border-radius: 10px;
   text-align: center;
-  /* Reduced blur to match the sponsor section */
-  backdrop-filter: blur(0px); 
-  border: 1px solid rgba(220,20,60,0.3);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
+  backdrop-filter: blur(0px);
+  border: 1px solid rgba(220,20,60,0.18);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.22);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .judge-placeholder:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.26);
 }
 
-.judge-placeholder i {
-  font-size: 3rem;
-  color: #ccc;
-  margin-bottom: 1rem;
+.judge-placeholder.centered {
+  justify-content: center;
+  min-height: 320px;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Remove icons if still in HTML */
+.judge-placeholder i { display: none; }
+
+/* White text */
+.judge-placeholder h3,
+.judge-placeholder p {
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .judge-placeholder h3 {
-  color: #fff;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
 }
 
-/* Specific background images for each judge container */
-.judge-1 {
-  background-image: url('./images/Judge 1.png');
+/* Judge image */
+.judge-photo {
+  width: clamp(140px, 30vw, 260px);
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+  border: 2px solid rgba(255,255,255,0.04);
+  background-color: #ececec;
 }
 
-.judge-2 {
-  background-image: url('./images/LoadingBG.png');
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .judges-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .judge-placeholder.centered {
+    min-height: 300px;
+  }
+  .judge-photo { width: clamp(130px, 30vw, 240px); }
 }
 
-.judge-3 {
-  background-image: url('./images/LoadingBG.png');
+@media (max-width: 640px) {
+  .judges-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  .judges {
+    background-attachment: scroll;
+  }
+  .judge-placeholder {
+    padding: 1rem;
+    gap: 0.6rem;
+  }
+  .judge-placeholder.centered {
+    min-height: auto;
+    justify-content: flex-start;
+  }
+  .judge-photo {
+    width: clamp(110px, 40vw, 200px);
+  }
 }
+
+/* fallback body bg if image fails */
+body, html {
+  background-color: #000000;
+}
+
 
 /* ===== Register & Contact ===== */
 .register-contact {
