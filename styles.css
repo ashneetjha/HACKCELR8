@@ -432,7 +432,7 @@ section h2::after {
 
 .sponsors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 }
 
@@ -440,7 +440,7 @@ section h2::after {
   background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%);
   background-size: cover;
   background-position: center;
-  padding: 2rem;
+  padding: 4rem; /* Increased vertical dimension */
   border-radius: 10px;
   text-align: center;
   backdrop-filter: blur(0px);
@@ -457,7 +457,6 @@ section h2::after {
 .sponsor-2 {
   background-image: url('./images/Altruisity.png');
 }
-
 /* ===== Judges Section (final merged) ===== */
 
 /* Page-level background */
