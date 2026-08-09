@@ -9,7 +9,7 @@ A modern, responsive website for the HACKCELR8 hackathon with an F1 racing theme
 - ⚡ **Modern Animations** - Smooth scroll animations and interactive elements
 - 📝 **Registration Form** - Ready-to-use registration system
 - 📞 **Contact Form** - Contact form for inquiries
-- 🎨 **Customizable Sections** - Easy to modify content and styling
+- 🎨 **Customizable Sections** - Easy to modify content and styling.
 
 ## Sections Included
 
